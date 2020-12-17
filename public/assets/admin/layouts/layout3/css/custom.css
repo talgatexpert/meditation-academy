@@ -1,0 +1,43 @@
+.page-header .page-header-top .page-logo .logo-default {
+    margin: 21.5px 0 0 0;
+}
+
+.load-pending-content {
+    display: none;
+}
+
+.load-pending-message {
+    text-align: center;
+    font-size: 18px;
+}
+
+.form .form-group label {
+    font-weight: bold;
+}
+
+.dt-filter-curator {
+    padding-top: 10px;
+}
+
+.dt-filter-clear {
+    position: relative;
+    left: -13px;
+    color: #cdd2d4;
+    font-size: 12px;
+}
+
+.dt-filter-hint {
+    float: right;
+    padding: 5px 0 0 5px;
+}
+
+a.hot-insert {
+    color: #737373;
+    font-size: 12px;
+}
+
+/* ================================================================================================================= */
+
+.popover {
+    z-index: 999999 !important;
+}

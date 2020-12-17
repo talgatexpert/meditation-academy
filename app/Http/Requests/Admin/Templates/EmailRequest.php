@@ -1,0 +1,78 @@
+<?php
+
+namespace App\Http\Requests\Admin\Templates;
+
+use App\Models\Template;
+use App\Models\User;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
+class EmailRequest extends FormRequest
+{
+
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        // Проверка прав доступа
+        return \Gate::any([User::ABILITY_ADMIN, User::ABILITY_MANAGER]);
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            'name' => [
+                'required',
+                'string',
+                Rule::in(array_keys(Template::NAMES)),
+                Rule::unique('templates')->ignore($this->email),
+            ],
+            'subject' => 'required|string|max:128',
+            'sender.email' => 'required|email:filter|max:64',
+            'sender.name' => 'nullable|string|max:32',
+            'body' => 'required|string|max:65535',
+        ];
+    }
+
+    /**
+     * Get custom messages for validator errors.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [];
+    }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return [
+            'name' => '"Название шаблона"',
+            'body' => '"Тело письма"',
+        ];
+    }
+
+    /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation(): void
+    {
+        // ...
+    }
+
+}

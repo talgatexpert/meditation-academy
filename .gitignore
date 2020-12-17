@@ -1,0 +1,10 @@
+/.idea
+/vendor
+/.env
+/.phpstorm.meta.php
+/_ide_helper.php
+/composer.json
+/composer.lock
+/node_modules
+/Apache-PHP-7.2-x64_vhost.conf
+/.htaccess
