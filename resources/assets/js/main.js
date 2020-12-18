@@ -882,9 +882,9 @@ $(function () {
                             '<textarea class="field__textarea" name="body" required maxlength="2000"></textarea>' +
                             '<div class="field__label">Ваш отчет</div>\n' +
                             '</div>' +
+                            '<input type="hidden" name="one_signal_client_id" id="oneSignalClientId" value="">'+
                             '<button type="submit" class="form__btn btn" onclick="return startPusher()"><span>Отправить отчет</span></button>' +
                             '</form>';
-                        // console.log($('[data-comment-id=' + parentCommentId.data('comment-id') + ']').length)
                         if ($('.report-form').length === 0 && $('[data-comment-id=' + parentCommentId.data('comment-id') + ']').length === 0) {
                             $('.js-form-report').append(html);
                         }

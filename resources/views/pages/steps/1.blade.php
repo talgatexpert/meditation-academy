@@ -174,7 +174,7 @@
                     <ul class="step-info__list list list--nomargin">
                         <li>Напишите нам, получилось ли выстроить расслабленное тело с прямой спиной?</li>
                         <li>Если возникли вопросы, обязательно задайте их в комментариях</li>
-                        <li>Письмо с аторизацией на следующем задании придет после ответа куратора</li>
+                        <li>Письмо с авторизацией на следующем задании придет после ответа куратора</li>
                     </ul>
 
                     @includeWhen(($guard = Auth::guard('participant'))->check() && $guard->user()->isStepAvailable(1) && !$guard->user()->reportedAtStep(1), 'includes.steps.report')

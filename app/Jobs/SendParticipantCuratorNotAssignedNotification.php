@@ -49,7 +49,7 @@ class SendParticipantCuratorNotAssignedNotification implements ShouldQueue
         if ($this->participant->curator_pending_level == Participant::CURATOR_PENDING_LEVEL_MANAGER) {
             $users = User::active()->manager()->get();
         } elseif ($this->participant->curator_pending_level == Participant::CURATOR_PENDING_LEVEL_ADMIN) {
-            $users = User::active()->admin()->orWhere->administrator()->get();
+            $users = User::active()->administrator()->get();
         }
         foreach ($users as $user) {
             // Необходимо каждый раз очищать массив с получателями, иначе каждое след. письмо будет содержать в себе пред. адрес

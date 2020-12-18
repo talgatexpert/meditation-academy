@@ -9,7 +9,6 @@ use App\Models\Participant;
 use App\Models\User;
 
 use Illuminate\Http\Request;
-use Meneses\LaravelMpdf\Facades\LaravelMpdf;
 
 class HomeController extends Controller
 {
@@ -26,6 +25,7 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
+
 
         $comments = Comment::hasReviews()->get();
         if ($comments->isEmpty()) {

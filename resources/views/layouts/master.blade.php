@@ -325,36 +325,54 @@
 </div>
 
 
+
 <script src="{{mix('assets/js/libs.min.js')}}"></script>
-<script src="{{mix('assets/js/main.min.js')}}"></script>
-<script src="/service-worker.js"></script>
-<script src="https://js.pusher.com/beams/1.0/push-notifications-cdn.js"></script>
+<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+
 @auth('participant')
-<script>
-    function startPusher(){
-        const beamsClient = new PusherPushNotifications.Client({
-            instanceId: "{{strval(env('PUSHER_BEAMS_INSTANCE_ID'))}}",
+    <script>
+        window.OneSignal = window.OneSignal || [];
+        OneSignal.push(function() {
+            OneSignal.init({
+                appId: "490a6e53-71ff-479c-ab40-2d5f0e9e9225",
+                safari_web_id: 'web.onesignal.auto.48cecb45-b9e1-42c4-afaa-e45f7f034833',
+                notifyButton: {
+                    enable: false,
+                },
+                promptOptions: {
+                    showCredit: false, // Hide Powered by OneSignal
+                    actionMessage: "просит разрешения получать уведомления:",
+                    exampleNotificationTitleDesktop: "Это просто тестовое сообщение",
+                    exampleNotificationMessageDesktop: "Уведомления будут приходить на Ваш ПК",
+                    exampleNotificationTitleMobile: " Пример уведомления",
+                    exampleNotificationMessageMobile: "Уведомления будут приходить на Ваше устройстве",
+                    exampleNotificationCaption: "(можно  отписаться в любое время)",
+                    acceptButtonText: "Продолжить".toUpperCase(),
+                    cancelButtonText: "Нет, спасибо".toUpperCase()
+                }
+            });
+
         });
-        const beamsTokenProvider = new PusherPushNotifications.TokenProvider({
-            url: "{{route('pusher')}}",
+        function startPusher(){
+
+            OneSignal.showNativePrompt();
+            OneSignal.push(function() {
+                OneSignal.getUserId().then(function(userId) {
+                    $('#oneSignalClientId').val(userId);
+                });
+            });
+
+        }
+        OneSignal.push(function() {
+            OneSignal.getUserId().then(function(userId) {
+                $('#oneSignalClientId').val(userId);
+            });
         });
-
-        const tokenProvider = new PusherPushNotifications.TokenProvider({
-            url: "{{route('pusher')}}",
-            queryParams: { someQueryParam: 'parameter-content' }, // URL query params your auth endpoint needs
-            headers: { someHeader: 'header-content' }, // Headers your auth endpoint needs
-        });
-        beamsClient
-            .start()
-            .then(() => beamsClient.setUserId("{{Auth::guard('participant')->id()}}", beamsTokenProvider))
-            .catch(console.error);
-    }
-
-    // startPusher()
-
-
-</script>
+    </script>
 @endauth
+<script src="{{mix('assets/js/main.min.js')}}"></script>
+
+
 
 @include('includes.scripts.popup')
 @stack('script')

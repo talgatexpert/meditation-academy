@@ -53,6 +53,7 @@ class Participant extends Authenticatable
         'certificate',
         'certificate_expiration_at',
         'comment_visible',
+        'one_signal'
     ];
 
     /**

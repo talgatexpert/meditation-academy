@@ -75,6 +75,7 @@ class CommentController extends Controller
             // Если участником был написан отчет, необходимо сохранить время публикации
             if ($comment->isReport()) {
                 $comment->participant->step_reported_at = now();
+                $comment->participant->one_signal = $request->has('one_signal_client_id') && !is_null($request->get('one_signal_client_id')) ? $request->get('one_signal_client_id') : $comment->participant->one_signal;
                 $comment->participant->save();
             }
 
