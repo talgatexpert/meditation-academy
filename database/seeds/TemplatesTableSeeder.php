@@ -18,7 +18,7 @@ class TemplatesTableSeeder extends Seeder
             'name' => Template::PARTICIPANT_EMAIL_CONFIRMATION,
             'subject' => '«7 шагов к медитации» – подтверждение адреса электронной почты',
             'sender' => [
-                'email' => '7steps@7steps.ru',
+                'email' => 'info@vueberry.com',
                 'name' => '7steps',
             ],
             'body' => trim(file_get_contents(__DIR__ . '/templates/email/' . Template::PARTICIPANT_EMAIL_CONFIRMATION . '.html')),
@@ -28,7 +28,7 @@ class TemplatesTableSeeder extends Seeder
             'name' => Template::PARTICIPANT_GRADUATE,
             'subject' => 'Спасибо за участие!',
             'sender' => [
-                'email' => '7steps@7steps.ru',
+                'email' => 'info@vueberry.com',
                 'name' => '7steps',
             ],
             'body' => trim(file_get_contents(__DIR__ . '/templates/email/' . Template::PARTICIPANT_GRADUATE . '.html')),
@@ -39,7 +39,7 @@ class TemplatesTableSeeder extends Seeder
             'name' => Template::PARTICIPANT_CURATOR_REPLIED,
             'subject' => 'Новый ответ на ваш комментарий',
             'sender' => [
-                'email' => '7steps@7steps.ru',
+                'email' => 'info@vueberry.com',
                 'name' => '7steps',
             ],
             'body' => trim(file_get_contents(__DIR__ . '/templates/email/' . Template::PARTICIPANT_CURATOR_REPLIED . '.html')),
