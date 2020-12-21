@@ -617,6 +617,18 @@ $(function () {
     $(document).on('submit', 'form.report-form', function (e) {
         e.preventDefault();
         var $form = $(this);
+        OneSignal.push(function () {
+            OneSignal.isPushNotificationsEnabled(function(isEnabled) {
+                if (isEnabled) {
+                    OneSignal.getUserId().then(function (userId) {
+                        $("#oneSignalClientId").val(userId)
+                    });
+                }
+                else {
+                    console.log("Push notifications are not enabled yet.");
+                }
+            });
+        });
         var $btn = $form.find('button[type=submit]');
         $btn.prop('disabled', true);
         $.ajax({
@@ -701,6 +713,7 @@ $(function () {
         }
         $replyForm.unbind('submit').submit(function (e) {
             e.preventDefault();
+
             var $btn = $replyForm.find('button[type=submit]');
             $btn.prop('disabled', true);
             $.ajax({
@@ -745,6 +758,7 @@ $(function () {
     // $('.comment-curator-reply-form form').unbind('submit');
     $(document).on('submit', '.comment-curator-reply-form form', function (e) {
         e.preventDefault();
+
         let $curatorReplyForm = $(this);
         var $btn = $curatorReplyForm.find('button[type=submit]');
         $btn.prop('disabled', true);

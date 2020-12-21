@@ -39,7 +39,7 @@
         </div>
         <input type="hidden" name="one_signal_client_id" id="oneSignalClientId" value="">
 
-        <button type="submit" class="form__btn btn" onclick="return startPusher()"> <span>Отправить отчет</span></button>
+        <button type="submit" class="form__btn btn"> <span>Отправить отчет</span></button>
     </form>
 @endif
 

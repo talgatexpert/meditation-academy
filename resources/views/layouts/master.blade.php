@@ -327,47 +327,25 @@
 
 
 <script src="{{mix('assets/js/libs.min.js')}}"></script>
-<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js"></script>
 
 @auth('participant')
     <script>
-        window.OneSignal = window.OneSignal || [];
-        OneSignal.push(function() {
-            OneSignal.init({
-                appId: "490a6e53-71ff-479c-ab40-2d5f0e9e9225",
-                safari_web_id: 'web.onesignal.auto.48cecb45-b9e1-42c4-afaa-e45f7f034833',
-                notifyButton: {
-                    enable: false,
-                },
-                promptOptions: {
-                    showCredit: false, // Hide Powered by OneSignal
-                    actionMessage: "просит разрешения получать уведомления:",
-                    exampleNotificationTitleDesktop: "Это просто тестовое сообщение",
-                    exampleNotificationMessageDesktop: "Уведомления будут приходить на Ваш ПК",
-                    exampleNotificationTitleMobile: " Пример уведомления",
-                    exampleNotificationMessageMobile: "Уведомления будут приходить на Ваше устройстве",
-                    exampleNotificationCaption: "(можно  отписаться в любое время)",
-                    acceptButtonText: "Продолжить".toUpperCase(),
-                    cancelButtonText: "Нет, спасибо".toUpperCase()
-                }
-            });
 
-        });
-        function startPusher(){
-
-            OneSignal.showNativePrompt();
-            OneSignal.push(function() {
-                OneSignal.getUserId().then(function(userId) {
-                    $('#oneSignalClientId').val(userId);
+            window.OneSignal = window.OneSignal || [];
+            OneSignal.push(function () {
+                OneSignal.init({
+                    appId: "{{env('ONE_SIGNAL_APP_KEY')}}",
+                    safari_web_id: "{{env('ONE_SIGNAL_SAFARI_WEB_ID')}}",
+                    notifyButton: {
+                        enable: false,
+                    },
+                    welcomeNotification: {
+                        disable: true
+                    }
                 });
+                OneSignal.showNativePrompt();
             });
-
-        }
-        OneSignal.push(function() {
-            OneSignal.getUserId().then(function(userId) {
-                $('#oneSignalClientId').val(userId);
-            });
-        });
     </script>
 @endauth
 <script src="{{mix('assets/js/main.min.js')}}"></script>
