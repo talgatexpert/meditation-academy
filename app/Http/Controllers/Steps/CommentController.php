@@ -78,7 +78,6 @@ class CommentController extends Controller
                 $comment->participant->one_signal = $request->has('one_signal') && !is_null($request->get('one_signal')) ? $request->get('one_signal') : $comment->participant->one_signal;
                 $comment->participant->save();
             }
-
             // Уведомляем менеджеров и назначенного куратора
             event(new CommentSent($comment));
         }

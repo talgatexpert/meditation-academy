@@ -621,6 +621,7 @@ $(function () {
         const queryOnSubmit = (val) => {
             var $btn = $form.find('button[type=submit]');
             const resultSerialize = $form.serialize() + val;
+            console.log(resultSerialize)
             $btn.prop('disabled', true);
             $.ajax({
                 type: $form.attr('method'),
@@ -629,7 +630,7 @@ $(function () {
             }).done(function (response) {
                 $btn.prop('disabled', false);
                 if (response.status === 'OK') {
-                    // $form.remove();
+                    $form.remove();
                     // Обновляем комментарии
                     $('.item-step__comments').data('last-id', response.lastId);
                     $('.comments__amount').text(response.reportsCount);
