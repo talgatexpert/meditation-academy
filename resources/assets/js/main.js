@@ -617,46 +617,51 @@ $(function () {
     $(document).on('submit', 'form.report-form', function (e) {
         e.preventDefault();
         var $form = $(this);
+
+        const queryOnSubmit = (val) => {
+            var $btn = $form.find('button[type=submit]');
+            const resultSerialize = $form.serialize() + val;
+            $btn.prop('disabled', true);
+            $.ajax({
+                type: $form.attr('method'),
+                url: $form.attr('action'),
+                data: resultSerialize
+            }).done(function (response) {
+                $btn.prop('disabled', false);
+                if (response.status === 'OK') {
+                    // $form.remove();
+                    // Обновляем комментарии
+                    $('.item-step__comments').data('last-id', response.lastId);
+                    $('.comments__amount').text(response.reportsCount);
+                    $('.comments__items').html(response.comments);
+                    $('.comments__more').css('display', response.showMore ? 'inline-flex' : 'none');
+                } else {
+                    alert(response.message ? response.message : 'Случилась непредвиденная ошибка.');
+                }
+            }).fail(function (xhr) {
+                $btn.prop('disabled', false);
+                var response = $.parseJSON(xhr.responseText);
+                if (response.status === 'ERROR' && response.errors) {
+                    var $textarea = $form.find('.field__textarea').addClass('error');
+                    $form.find('label.error').remove();
+                    $('<label class="error">' + response.errors[Object.keys(response.errors)[0]] + '</label>').insertAfter($textarea);
+                } else {
+                    alert(response.message ? response.message : 'Случилась непредвиденная ошибка.');
+                }
+            });
+        };
         OneSignal.push(function () {
             OneSignal.isPushNotificationsEnabled(function(isEnabled) {
                 if (isEnabled) {
-                    OneSignal.getUserId().then(function (userId) {
-                        $("#oneSignalClientId").val(userId)
-                    });
+                    OneSignal.getUserId()
+                        .then(res => {
+                            queryOnSubmit(res)
+                        })
                 }
                 else {
-                    console.log("Push notifications are not enabled yet.");
+                    queryOnSubmit('')
                 }
             });
-        });
-        var $btn = $form.find('button[type=submit]');
-        $btn.prop('disabled', true);
-        $.ajax({
-            type: $form.attr('method'),
-            url: $form.attr('action'),
-            data: $form.serialize()
-        }).done(function (response) {
-            $btn.prop('disabled', false);
-            if (response.status === 'OK') {
-                $form.remove();
-                // Обновляем комментарии
-                $('.item-step__comments').data('last-id', response.lastId);
-                $('.comments__amount').text(response.reportsCount);
-                $('.comments__items').html(response.comments);
-                $('.comments__more').css('display', response.showMore ? 'inline-flex' : 'none');
-            } else {
-                alert(response.message ? response.message : 'Случилась непредвиденная ошибка.');
-            }
-        }).fail(function (xhr) {
-            $btn.prop('disabled', false);
-            var response = $.parseJSON(xhr.responseText);
-            if (response.status === 'ERROR' && response.errors) {
-                var $textarea = $form.find('.field__textarea').addClass('error');
-                $form.find('label.error').remove();
-                $('<label class="error">' + response.errors[Object.keys(response.errors)[0]] + '</label>').insertAfter($textarea);
-            } else {
-                alert(response.message ? response.message : 'Случилась непредвиденная ошибка.');
-            }
         });
     });
 
@@ -896,7 +901,7 @@ $(function () {
                             '<textarea class="field__textarea" name="body" required maxlength="2000"></textarea>' +
                             '<div class="field__label">Ваш отчет</div>\n' +
                             '</div>' +
-                            '<input type="hidden" name="one_signal_client_id" id="oneSignalClientId" value="">'+
+                            '<input type="hidden" name="one_signal" id="oneSignalClientId" value="">'+
                             '<button type="submit" class="form__btn btn" onclick="return startPusher()"><span>Отправить отчет</span></button>' +
                             '</form>';
                         if ($('.report-form').length === 0 && $('[data-comment-id=' + parentCommentId.data('comment-id') + ']').length === 0) {

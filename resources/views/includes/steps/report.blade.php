@@ -28,7 +28,7 @@
             <textarea class="field__textarea" name="comment" required></textarea>
             <div class="field__label">Ответ публикуется на главной странице</div>
         </div>
-        <input type="hidden" name="one_signal_client_id" id="oneSignalClientId" value="">
+        <input type="hidden" name="one_signal" id="oneSignalClientId" value="">
         <button type="submit" class="form__btn btn"> <span>Отправить финальный отчет</span></button>
     </form>
 @else
@@ -37,7 +37,7 @@
             <textarea class="field__textarea" name="body" required maxlength="2000"></textarea>
             <div class="field__label">Ваш отчет</div>
         </div>
-        <input type="hidden" name="one_signal_client_id" id="oneSignalClientId" value="">
+        <input type="hidden" name="one_signal" id="oneSignalClientId" value="">
 
         <button type="submit" class="form__btn btn"> <span>Отправить отчет</span></button>
     </form>

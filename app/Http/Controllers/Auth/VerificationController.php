@@ -21,7 +21,7 @@ class VerificationController extends Controller
     {
         $participant = Participant::find($id);
         // Проверяем, не подтвержден ли уже участник, а так же сверяем хеш
-        if (!$participant->isVerified() && hash_equals($hash, sha1($participant->email))) {
+        if ($participant && !$participant->isVerified() && hash_equals($hash, sha1($participant->email))) {
             // Подтверждаем участника
             $participant->verify();
 
