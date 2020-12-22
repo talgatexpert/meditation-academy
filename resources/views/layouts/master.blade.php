@@ -345,6 +345,8 @@
                     }
                 });
 
+                OneSignal.showSlidedownPrompt()
+
             });
     </script>
 @endauth
