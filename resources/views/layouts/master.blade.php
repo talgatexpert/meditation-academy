@@ -335,7 +335,7 @@
 
 @auth('participant')
     <script>
-
+        window.onload = function() {
             window.OneSignal = window.OneSignal || [];
             OneSignal.push(function () {
                 OneSignal.init({
@@ -349,6 +349,7 @@
                     }
                 });
             });
+        }
 
 
 
