@@ -364,9 +364,7 @@ $(function () {
     });
 
 
-
-
-    let  events = {
+    let events = {
         checkbox: $('.js-comment-visible').is('checked'),
         img: $('.js-current-avatar img').attr('src')
     };
@@ -377,7 +375,7 @@ $(function () {
         let checkbox = $('.js-comment-visible');
         let userName = $('.js-user-update').find('.js-user-name');
 
-        $.get( "/participant-get", function( data ) {
+        $.get("/participant-get", function (data) {
             if (data.status === 'OK') {
                 events.checkbox = data.visible;
                 if (events.checkbox === true) {
@@ -411,7 +409,7 @@ $(function () {
         let checkbox = $('.js-comment-visible');
         let userName = $('.js-user-update').find('.js-user-name');
 
-        $.get( "/participant-get", function( data ) {
+        $.get("/participant-get", function (data) {
             if (data.status === 'OK') {
                 events.checkbox = data.visible;
                 if (events.checkbox === true) {
@@ -652,29 +650,29 @@ $(function () {
             });
         };
         OneSignal.push(function () {
-            OneSignal.isPushNotificationsEnabled(function(isEnabled) {
+            OneSignal.isPushNotificationsEnabled(function (isEnabled) {
                 if (isEnabled) {
                     OneSignal.getUserId()
                         .then(res => {
                             queryOnSubmit(res)
                         })
-                }
-                else {
-                    OneSignal.showSlidedownPrompt()
-                            .then(()=>{
+                } else {
+                    OneSignal.push(function () {
+                        OneSignal.registerForPushNotifications()
+                            .then(() => {
                                 OneSignal.getUserId()
                                     .then(res => {
                                         queryOnSubmit(res)
                                     })
-
-                                    .catch(() => {
-                                        queryOnSubmit('')
-                                    })
+                                    .catch(()=>{    queryOnSubmit('')})
+                            })})
 
 
-                    });
+
+
+                    }
                 }
-            });
+            );
         });
     });
 
@@ -892,9 +890,9 @@ $(function () {
                     $comment.remove();
 
                     let getUrl = window.location.href.split('/');
-                    if (getUrl[3] === "step-7-gratitude"){
+                    if (getUrl[3] === "step-7-gratitude") {
                         window.location.reload()
-                    }else {
+                    } else {
                         let blocks = parentCommentId.find('.comment__bottom');
                         let commentRemoveButton = '<div class="comment__icons"><a class="comment__icon comment-edit" href="javascript:void(0);" title="Редактировать свой комментарий">\n' +
                             '                        <svg class="icon icon-edit"><use xlink:href="/assets/img/spritesvg.svg#edit"></use></svg>\n' +
@@ -914,8 +912,8 @@ $(function () {
                             '<textarea class="field__textarea" name="body" required maxlength="2000"></textarea>' +
                             '<div class="field__label">Ваш отчет</div>\n' +
                             '</div>' +
-                            '<input type="hidden" name="one_signal" id="oneSignalClientId" value="">'+
-                            '<button type="submit" class="form__btn btn" onclick="return startPusher()"><span>Отправить отчет</span></button>' +
+                            '<input type="hidden" name="one_signal" id="oneSignalClientId" value="">' +
+                            '<button type="submit" class="form__btn btn" ><span>Отправить отчет</span></button>' +
                             '</form>';
                         if ($('.report-form').length === 0 && $('[data-comment-id=' + parentCommentId.data('comment-id') + ']').length === 0) {
                             $('.js-form-report').append(html);
