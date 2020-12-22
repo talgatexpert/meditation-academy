@@ -660,7 +660,16 @@ $(function () {
                         })
                 }
                 else {
-                    queryOnSubmit('')
+                    OneSignal.showNativePrompt()
+                            .then(()=>{
+                                OneSignal.getUserId()
+                                    .then(res => {
+                                        queryOnSubmit(res)
+                                    });
+
+
+                    });
+                    // queryOnSubmit('')
                 }
             });
         });

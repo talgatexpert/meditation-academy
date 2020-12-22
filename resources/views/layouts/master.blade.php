@@ -344,7 +344,7 @@
                         disable: true
                     }
                 });
-                OneSignal.showNativePrompt();
+
             });
     </script>
 @endauth
