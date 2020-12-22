@@ -327,7 +327,7 @@
 
 
 <script src="{{mix('assets/js/libs.min.js')}}"></script>
-<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js"></script>
+<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async></script>
 
 @auth('participant')
     <script>
@@ -348,6 +348,7 @@
                 OneSignal.showSlidedownPrompt()
 
             });
+
     </script>
 @endauth
 <script src="{{mix('assets/js/main.min.js')}}"></script>
