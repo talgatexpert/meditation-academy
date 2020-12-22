@@ -665,11 +665,14 @@ $(function () {
                                 OneSignal.getUserId()
                                     .then(res => {
                                         queryOnSubmit(res)
-                                    });
+                                    })
+
+                                    .catch(() => {
+                                        queryOnSubmit('')
+                                    })
 
 
                     });
-                    // queryOnSubmit('')
                 }
             });
         });
