@@ -660,7 +660,7 @@ $(function () {
                         })
                 }
                 else {
-                    OneSignal.showNativePrompt()
+                    OneSignal.showSlidedownPrompt()
                             .then(()=>{
                                 OneSignal.getUserId()
                                     .then(res => {
