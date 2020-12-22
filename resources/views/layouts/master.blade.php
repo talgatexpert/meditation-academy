@@ -328,28 +328,23 @@
 
 <script src="{{mix('assets/js/libs.min.js')}}"></script>
 <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js"></script>
-<script src="https://cdn.onesignal.com/sdks/OneSignalSDKWorker.js"></script>
-
-
-
 
 @auth('participant')
     <script>
-        window.onload = function() {
+
             window.OneSignal = window.OneSignal || [];
             OneSignal.push(function () {
                 OneSignal.init({
                     appId: "{{env('ONE_SIGNAL_APP_KEY')}}",
                     safari_web_id: "{{env('ONE_SIGNAL_SAFARI_WEB_ID')}}",
                     notifyButton: {
-                        enable: false,
+                        enable: true,
                     },
                     welcomeNotification: {
                         disable: true
                     }
                 });
             });
-        }
 
 
 
