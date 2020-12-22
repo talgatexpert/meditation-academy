@@ -327,7 +327,10 @@
 
 
 <script src="{{mix('assets/js/libs.min.js')}}"></script>
-<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js"></script>
+{{--<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js"></script>--}}
+<script src="/OneSignalSDK.js"></script>
+<script src="/OneSignalSDKUpdaterWorker.js"></script>
+
 
 @auth('participant')
     <script>
