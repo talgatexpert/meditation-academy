@@ -345,9 +345,6 @@
                     }
                 });
             });
-            window.safari.pushNotification.requestPermission(OneSignal._API_URL + 'safari', OneSignal.config.safari_web_id, {app_id: OneSignal.config.appId}, function(response) {
-                console.warn('pushNotification.requestPermission Safari Registration Result:', response);
-            });
 
 
 
