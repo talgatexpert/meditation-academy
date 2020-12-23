@@ -104,8 +104,12 @@
                                     <li class="{{ request()->is('admin/polls') ? 'active' : '' }}">
                                         <a href="{{ route('admin.polls.index') }}"> Статистика опросов </a>
                                     </li>
+                                        <li class="{{ request()->is('admin/curator-statistics') ? 'active' : '' }}">
+                                            <a href="{{ route('admin.curator.statistics') }}"> Статистика кураторов </a>
+                                        </li>
 
-                                    <li class="menu-dropdown classic-menu-dropdown {{ request()->is('admin/templates/*') ? 'active' : '' }}">
+
+                                        <li class="menu-dropdown classic-menu-dropdown {{ request()->is('admin/templates/*') ? 'active' : '' }}">
                                         <a href="javascript:void(0);"> Шаблоны <span class="arrow"></span></a>
                                         <ul class="dropdown-menu pull-left">
                                             <li class="{{ request()->is('admin/templates/email', 'admin/templates/email/*') ? 'active' : '' }}">

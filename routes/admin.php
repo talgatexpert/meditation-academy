@@ -47,6 +47,8 @@ Route::group(['middleware' => ['admin.auth']], function () {
 
     // Статистика опросов
     Route::resource('polls', 'PollController', ['only' => 'index']);
+    Route::get('curator-statistics', 'StatisticController@index')->name('curator.statistics');
+
 
     // Шаблоны
     Route::group(['prefix' => 'templates', 'as' => 'templates.', 'namespace' => 'Templates'], function () {

@@ -271,4 +271,6 @@ class User extends Authenticatable
             return $query->where('role', self::ROLE_CURATOR)->where('id', $curator_id);
     }
 
+
+
 }
