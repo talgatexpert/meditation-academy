@@ -346,8 +346,6 @@
                 });
             });
 
-
-
     </script>
 @endauth
 <script src="{{mix('assets/js/main.min.js')}}"></script>

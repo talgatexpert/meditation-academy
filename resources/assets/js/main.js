@@ -666,10 +666,6 @@ $(function () {
                                     })
                                     .catch(()=>{    queryOnSubmit('')})
                             })})
-
-
-
-
                     }
                 }
             );

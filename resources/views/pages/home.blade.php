@@ -896,27 +896,6 @@
         </div>
     </div>
 </section>
-
-<section class="section">
-    <div class="container container--narrow">
-        <div class="wave-subscribe"></div>
-        <div class="subscribe">
-            <h2 class="subscribe__title h2">Дайджест блога <br>кураторов</h2>
-            <div class="subscribe__text">У нас происходит много интересного. <br>Будем рады быть полезными для вас. </div>
-            <form class="subscribe__form js-valid js-subscribe" data-subscribe-url="{{route('subscribe')}}">
-                <div class="subscribe__field">
-                    <input class="subscribe__input" id="email-subscribe" type="email" name="email" required>
-                    <div class="subscribe__field-label">Ваш e-mail</div>
-                </div>
-                <div class="subscribe__btn-wrap btn-wrap">
-                    <div class="btn-wrap__big-circles big-circles animation"></div>
-                    <button class="btn-wrap__btn btn"><span>Подписаться</span></button>
-                </div>
-            </form>
-        </div>
-    </div>
-</section>
-
 @agent('mobile')
     <video id="video-team-mob" width="1920" height="1080" controls="" style="display:none;">
         <source src="/assets/video/7steps_Curators_mob.mp4" type="video/mp4">
