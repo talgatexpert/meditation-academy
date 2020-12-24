@@ -12,6 +12,8 @@
     <link href="/assets/css/main.min.css?v6" rel="stylesheet">
 </head>
 <body>
+
+
 <div class="page-wrap">
     <div class="page-content @yield('class')">
         <header class="header js-header">
@@ -98,11 +100,13 @@
                                     class="user__name user__name--green">{{ Auth::guard('participant')->user()->name }}</div>
                             </a>
                         @else
-                        @canany([\App\Models\User::ABILITY_ADMIN, \App\Models\User::ABILITY_MANAGER, \App\Models\User::ABILITY_CURATOR])
-                            <a class="header__link page-link" href="{{route('admin.dashboard')}}">Перейти в админ панель</a>
-                        @else
-                            <a class="header__link page-link js-registration" href="javascript:void(0);">Вход и регистрация</a>
-                        @endcanany
+                            @canany([\App\Models\User::ABILITY_ADMIN, \App\Models\User::ABILITY_MANAGER, \App\Models\User::ABILITY_CURATOR])
+                                <a class="header__link page-link" href="{{route('admin.dashboard')}}">Перейти в админ
+                                    панель</a>
+                            @else
+                                <a class="header__link page-link js-registration" href="javascript:void(0);">Вход и
+                                    регистрация</a>
+                            @endcanany
                         @endauth
 
                         <a class="header__hamb hamb js-hamb"
@@ -324,6 +328,7 @@
     </a>
 </div>
 
+    @include('cookieConsent::index')
 
 
 <script src="{{mix('assets/js/libs.min.js')}}"></script>
@@ -332,24 +337,23 @@
 @auth('participant')
     <script>
 
-            window.OneSignal = window.OneSignal || [];
-            OneSignal.push(function () {
-                OneSignal.init({
-                    appId: "{{env('ONE_SIGNAL_APP_KEY')}}",
-                    safari_web_id: "{{env('ONE_SIGNAL_SAFARI_WEB_ID')}}",
-                    notifyButton: {
-                        enable: true,
-                    },
-                    welcomeNotification: {
-                        disable: true
-                    }
-                });
+        window.OneSignal = window.OneSignal || [];
+        OneSignal.push(function () {
+            OneSignal.init({
+                appId: "{{env('ONE_SIGNAL_APP_KEY')}}",
+                safari_web_id: "{{env('ONE_SIGNAL_SAFARI_WEB_ID')}}",
+                notifyButton: {
+                    enable: true,
+                },
+                welcomeNotification: {
+                    disable: true
+                }
             });
+        });
 
     </script>
 @endauth
 <script src="{{mix('assets/js/main.min.js')}}"></script>
-
 
 
 @include('includes.scripts.popup')

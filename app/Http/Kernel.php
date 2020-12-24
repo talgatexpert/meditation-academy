@@ -20,6 +20,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+
     ];
 
     /**
@@ -38,7 +39,8 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\BlackList::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        ],
+            \Spatie\CookieConsent\CookieConsentMiddleware::class,
+            ],
 
         'admin' => [
             \App\Http\Middleware\EncryptCookies::class,
@@ -83,6 +85,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\Admin\CheckUser::class,
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
         \Illuminate\Auth\Middleware\Authorize::class,
+
     ];
 
 }
