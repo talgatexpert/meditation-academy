@@ -30,7 +30,7 @@
             color: #6b5334;
         }
     </style>
-    <div style="" class="mt-cookie-consent-bar cookie-container">
+    <div style="" class="mt-cookie-consent-bar cookie-container js-cookie-consent">
     @include('cookieConsent::dialogContents')
     </div>
 
