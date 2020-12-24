@@ -11,7 +11,9 @@ const mix = require('laravel-mix');
  |
  */
 let productionSourceMaps = true;
-
+mix.styles('resources/assets/css/main.css', 'public/assets/css/main.min.css')
+    .sourceMaps(productionSourceMaps, 'source-map')
+    .version();
 mix.scripts([
     'resources/assets/js/main.js',
 ], 'public/assets/js/main.min.js')

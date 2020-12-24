@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\Comment;
 use App\Models\Participant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -25,7 +26,7 @@ class CuratorNotReplied extends Mailable
      *
      * @param Participant $participant
      */
-    public function __construct(Participant $participant)
+    public function     __construct(Participant $participant)
     {
         $this->participant = $participant;
     }
@@ -37,14 +38,20 @@ class CuratorNotReplied extends Mailable
      */
     public function build()
     {
+        $comment = $this->participant->comments()->latest()->get()[0];
+        $actionUrl = route('steps.' . $this->participant->step, ['curator_reply' => $comment->id, 'token' => $this->token ]) . '#comment-' . $comment->id;
         return $this
             ->subject('Участнику "' . $this->participant->name . '" не прокомментирован отчет')
             ->markdown('vendor.notifications.email', [
                 'level' => 'default',
-                'greeting' => 'Необходимо прокомментировать комментарий участника',
+                'greeting' => 'Необходимо ответить на комментарий участника',
                 'introLines' => [
                     'Имя: ' . $this->participant->name,
+                    'Шаг: ' . $this->participant->step
                 ],
+                'actionText' => 'Перейти на сайт',
+                'actionUrl' => $actionUrl,
+                'displayableActionUrl' => $actionUrl,
                 'outroLines' => [],
                 'salutation' => '',
             ]);

@@ -1,38 +1,16 @@
 @if($cookieConsentConfig['enabled'] && ! $alreadyConsentedWithCookies)
-    <style>
-        .cookie-container {
-            position: fixed;
-            bottom: 0;
-            background-color: #F7E8D4;
-            width: 100%;
-            padding: 20px;
-            text-align: center;
-            z-index: 200;
-            opacity: .8;
-        }
 
-        .cookie-container button {
-            cursor: pointer;
-            font-weight: 700;
-            background-color: #F7D1A1; /* Green */
-            border: none;
-            color: #B0701C;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin-left: 10px;
-        }
 
-        .cookie-container button:hover {
-            background-color: #e4b06d;
-            color: #6b5334;
-        }
-    </style>
-    <div style="" class="mt-cookie-consent-bar cookie-container js-cookie-consent">
-    @include('cookieConsent::dialogContents')
+    <div class="js-cookie-consent cookie-consent cookie-container">
+        <h2>{!! trans('cookieConsent::texts.title') !!}</h2>
+        <div class="cookie-consent__message-container">
+            <p>{!! trans('cookieConsent::texts.message') !!}</p>
+            <button class="js-cookie-consent-agree reasons__btn btn cookie-consent__agree">
+                <span>{{ trans('cookieConsent::texts.agree') }}</span>
+            </button>
+        </div>
     </div>
+
 
     <script>
 

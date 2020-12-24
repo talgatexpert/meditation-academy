@@ -6762,7 +6762,6 @@ body.compensate-for-scrollbar {
 
 /* Styling for Small-Screen Devices */
 @media all and (max-height: 576px) {
-
     .fancybox-slide {
         padding-left: 6px;
         padding-right: 6px;
@@ -7372,30 +7371,6 @@ body.compensate-for-scrollbar {
     z-index: 1;
     height: 100%;
     width: 100%;
-}
-.cookie-container {
-    position: fixed;
-    bottom: 0;
-    background-color: #464A52;
-    padding: 75px 82px;
-    z-index: 200;
-    color: #ffffff;
-}
-.cookie-container h2{
-    margin-bottom: 0;
-    font-size: 40px;
-    color: #ffffff;
-    font-family: Montserrat, sans-serif;
-}
-
-.cookie-container button {
-    cursor: pointer;
-}
-.cookie-consent__message-container{
-    display: flex;
-}
-.cookie-consent__message-container p{
-    font-size: 22px;
 }
 
 /* responsive */
@@ -9905,22 +9880,6 @@ body.compensate-for-scrollbar {
 }
 
 @media (max-width: 479px) {
-    .cookie-container h2{
-        font-weight: 700;
-        font-size: 28px;
-        line-height: 1;
-    }
-    .cookie-consent__message-container p{
-        font-size: 16px;
-        line-height: 1.4;
-    }
-    .cookie-container{
-        padding: 58px 27px;
-        text-align: center;
-    }
-    .cookie-consent__message-container{
-        display: block;
-    }
     .container--padding-mob {
         position: relative;
         padding-top: 250px;

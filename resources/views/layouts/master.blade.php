@@ -9,7 +9,7 @@
     <meta name="description" content="@yield('description')">
     <meta name="keywords" content="@yield('keywords')">
     <meta name="theme-color" content="#28C48B">
-    <link href="/assets/css/main.min.css?v6" rel="stylesheet">
+    <link href="{{ mix('assets/css/main.min.css') }}" rel="stylesheet">
 </head>
 <body>
 
@@ -327,14 +327,9 @@
         </svg>
     </a>
 </div>
-
-    @include('cookieConsent::index')
-
-
 <script src="{{mix('assets/js/libs.min.js')}}"></script>
-<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js"></script>
-
 @auth('participant')
+<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js"></script>
     <script>
 
         window.OneSignal = window.OneSignal || [];
