@@ -12,7 +12,7 @@
             <a class="breadcrumbs__link" href="{{ route('home') }}">Главная</a>
         </li>
         <li class="breadcrumbs__item">
-            <span class="breadcrumbs__text">7 шагов медитации</span>
+            <span class="breadcrumbs__text">7 шагов к медитации</span>
         </li>
     </ul>
 

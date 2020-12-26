@@ -112,7 +112,7 @@ class  Comment extends \Eloquent
     public function canBeEditedByOwner(): bool
     {
         $guard = \Auth::guard('participant');
-        return $guard->check() && $this->participant_id == $guard->id() && $this->created_at->diffInSeconds(now()) < 86400 && !$this->reportHasComments();
+        return ($guard->check() && $this->participant_id == $guard->id() && $this->created_at->diffInSeconds(now()) < 86400 && !$this->reportHasComments()) || (\Auth::check() && (\Auth::user()->isCurator()  || \Auth::user()->isManager()) && $this->hasCurator(\Auth::id()));
     }
 
     /**
@@ -142,8 +142,11 @@ class  Comment extends \Eloquent
 
     // Возвращает true если комментарий куратора
 
-    public function hasCurator(): bool
+    public function hasCurator(int $id = null): bool
     {
+        if ($id) {
+            return !is_null($this->curator_id) && $this->curator_id === $id;
+        }
         return !is_null($this->curator_id);
     }
 

@@ -26,7 +26,8 @@ class AddRememberTokenToParticipantsTable extends Migration
     public function down()
     {
         Schema::table('participants', function (Blueprint $table) {
-            //
+            $table->dropColumn('remember_token');
+
         });
     }
 }

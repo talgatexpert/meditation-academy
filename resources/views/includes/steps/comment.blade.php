@@ -14,8 +14,8 @@
                 <svg class="icon icon-heart"><use xlink:href="/assets/img/spritesvg.svg#heart"></use></svg>
                 <span>{{ $report->likes->count() }}</span>
             </a>
-            @if(Gate::any([\App\Models\User::ABILITY_ADMIN, \App\Models\User::ABILITY_MANAGER, \App\Models\User::ABILITY_CURATOR]) || (Auth::guard('participant')->check() &&  $report->participant_id === Auth::guard('participant')->id()))
-                <a class="comment__answer page-link @canany([\App\Models\User::ABILITY_ADMIN, \App\Models\User::ABILITY_MANAGER, \App\Models\User::ABILITY_CURATOR]) js-curator-comment-reply @else comment-reply   @endcanany" href="javascript:void(0);">Ответить на комментарий</a>
+            @if((Auth::check() && (Auth::user()->isCurator() || Auth::user()->isManager())) || (Auth::guard('participant')->check() &&  $report->participant_id === Auth::guard('participant')->id()))
+                <a class="comment__answer page-link @if(Auth::check() && (Auth::user()->isCurator() || Auth::user()->isManager())) js-curator-comment-reply @else comment-reply   @endif" href="javascript:void(0);">Ответить на комментарий</a>
             @endif
             @if ($report->canBeEditedByOwner())
                 <div class="comment__icons">
@@ -29,7 +29,7 @@
             @endif
         </div>
 
-        @if ((Auth::check() && Auth::user()->isCurator() ||  Auth::check() && Auth::user()->isManager()))
+        @if (Auth::check() && (Auth::user()->isCurator() || Auth::user()->isManager()))
             <div class="comment-curator-reply-form" style="margin-top:10px; @if($report->id == request('curator_reply')) display:block @else display: none @endif">
                 <form action="{{ route('steps.comments.store') }}" method="POST" class="step-info__form form">
                     <div class="form__field field field--wide">

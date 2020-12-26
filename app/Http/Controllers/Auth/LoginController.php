@@ -8,6 +8,8 @@ use App\Http\Requests\LoginRequest;
 use App\Models\Blacklist;
 use App\Models\Participant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Validation\Rule;
 
 class LoginController extends Controller
@@ -54,7 +56,9 @@ class LoginController extends Controller
                 }
 
                 // Авторизуем участника
-                \Auth::guard('participant')->login($participant, true);
+                \Auth::guard('participant')->login($participant);
+                $ckname = Auth::guard('participant')->getRecallerName();
+                Cookie::queue($ckname, Cookie::get($ckname), env("COOKIES_LIFETIME", 20160));
             } else {
                 // Проверяем, совпадает ли только имя или только email
                 if (\Str::lower($participant->name) === \Str::lower($request->name)) {

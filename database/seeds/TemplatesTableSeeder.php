@@ -44,6 +44,47 @@ class TemplatesTableSeeder extends Seeder
             ],
             'body' => trim(file_get_contents(__DIR__ . '/templates/email/' . Template::PARTICIPANT_CURATOR_REPLIED . '.html')),
         ]);
+
+        // Письмо ремайндер щаг 4
+        Template::create([
+            'name' => Template::PARTICIPANT_REMIND_STEP_4,
+            'subject' => 'Нужна помощь?',
+            'sender' => [
+                'email' => 'info@vueberry.com',
+                'name' => '7steps',
+            ],
+            'body' => trim(file_get_contents(__DIR__ . '/templates/email/' . Template::PARTICIPANT_REMIND_STEP_4 . '.html')),
+        ]);
+        // Письмо ремайндер щаг 5
+        Template::create([
+            'name' => Template::PARTICIPANT_REMIND_STEP_5,
+            'subject' => 'Как проходят ваши «дни осознанности»?',
+            'sender' => [
+                'email' => 'info@vueberry.com',
+                'name' => '7steps',
+            ],
+            'body' => trim(file_get_contents(__DIR__ . '/templates/email/' . Template::PARTICIPANT_REMIND_STEP_5 . '.html')),
+        ]);
+        // Письмо ремайндер щаг 5
+        Template::create([
+            'name' => Template::PARTICIPANT_REMIND_STEP_6,
+            'subject' => 'Возвращайтесь!',
+            'sender' => [
+                'email' => 'info@vueberry.com',
+                'name' => '7steps',
+            ],
+            'body' => trim(file_get_contents(__DIR__ . '/templates/email/' . Template::PARTICIPANT_REMIND_STEP_6 . '.html')),
+        ]);
+        // Письмо ремайндер щаг 5
+        Template::create([
+            'name' => Template::PARTICIPANT_REMIND_STEP_7,
+            'subject' => 'Не сдавайтесь! Вы почти у цели.',
+            'sender' => [
+                'email' => 'info@vueberry.com',
+                'name' => '7steps',
+            ],
+            'body' => trim(file_get_contents(__DIR__ . '/templates/email/' . Template::PARTICIPANT_REMIND_STEP_7 . '.html')),
+        ]);
     }
 
 }

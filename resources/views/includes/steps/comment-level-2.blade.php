@@ -20,8 +20,15 @@
 {{--                <a class="comment__answer page-link comment-reply" href="javascript:void(0);">Ответить на комментарий</a>--}}
 
 {{--            @endif--}}
-            @if((Gate::any([\App\Models\User::ABILITY_ADMIN,  \App\Models\User::ABILITY_MANAGER, \App\Models\User::ABILITY_CURATOR]) &&  $report->reportHasCuratorReply([$report->id]) && is_null($comment->curator_id)) ||  (Auth::guard('participant')->check() && Auth::guard('participant')->id() === $report->participant_id))
-                <a class="comment__answer page-link @canany([\App\Models\User::ABILITY_ADMIN, \App\Models\User::ABILITY_MANAGER, \App\Models\User::ABILITY_CURATOR]) js-curator-comment-reply @else comment-reply   @endcanany" href="javascript:void(0);">Ответить на комментарий</a>
+            @if((Auth::check()
+                 && (Auth::user()->isCurator() || Auth::user()->isManager())
+                 &&  $report->reportHasCuratorReply([$report->id])
+                 && $comment->hasCurator())
+                 ||  (Auth::guard('participant')->check() && Auth::guard('participant')->id() === $report->participant_id))
+                <a class="comment__answer page-link
+                @if((Auth::check()) && (Auth::user()->isCurator() || Auth::user()->isManager()))
+                    js-curator-comment-reply @else comment-reply
+                @endif" href="javascript:void(0);">Ответить на комментарий</a>
             @endif
             @if ($comment->canBeEditedByOwner())
                 <div class="comment__icons">
@@ -48,7 +55,7 @@
             </div>
         @endif
 
-        @if((Gate::any([\App\Models\User::ABILITY_ADMIN,\App\Models\User::ABILITY_MANAGER, \App\Models\User::ABILITY_CURATOR]) &&  $report->reportHasCuratorReply([$report->id]) && is_null($comment->curator_id)) ||  (Auth::guard('participant')->check() && Auth::guard('participant')->id() === $report->participant_id))
+        @if(((Auth::check() && (Auth::user()->isCurator() || Auth::user()->isManager()))  &&  $report->reportHasCuratorReply([$report->id]) && is_null($comment->curator_id)) ||  (Auth::guard('participant')->check() && Auth::guard('participant')->id() === $report->participant_id))
             <div class="comment-reply-form" style="margin-top:10px;display:none;">
                 <form action="{{ route('steps.comments.store') }}" method="POST" class="step-info__form form">
                     <div class="form__field field field--wide">

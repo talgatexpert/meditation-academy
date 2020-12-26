@@ -61,22 +61,18 @@ class SendNewCommentNotification implements ShouldQueue
             // Генерируем токены для каждого юзера отдельно
             if ($this->comment->participant->curator_id === $user->id) {
                 // проверяем есть ли у пользователя уже токен если да используем текущий  || или создаем новый токен
-                if (is_null($user->remember_token)){
-                    $auth = \Auth::loginUsingId($user->id, true);
-                    $token = $auth ? $auth->remember_token : null;
-                }else{
-                    $token = $user->remember_token;
+                if (empty($user->getRememberToken())){
+                    $user->setRememberToken(Str::random(60));
+                    $user->save;
                 }
-                \Mail::to($user)->send( new NewComment($this->comment, $token));
+                \Mail::to($user)->send( new NewComment($this->comment, $user->getRememberToken()));
 
             }else{
-                if (is_null($user->remember_token)){
-                    $auth = \Auth::loginUsingId($user->id, true);
-                    $token = $auth ? $auth->remember_token : null;
-                }else{
-                    $token = $user->remember_token;
+                if (empty($user->getRememberToken())){
+                    $user->setRememberToken(Str::random(60));
+                    $user->save;
                 }
-                \Mail::to($user)->send( new NewComment($this->comment, $token));
+                \Mail::to($user)->send( new NewComment($this->comment, $user->getRememberToken()));
 
             }
 

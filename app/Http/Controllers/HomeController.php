@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 
 
+use App\Jobs\SendParticipantRemindNotification;
 use App\Models\Comment;
 use App\Models\Participant;
 use App\Models\User;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -25,8 +27,6 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-
-
         $comments = Comment::hasReviews()->get();
         if ($comments->isEmpty()) {
             $comments = null;
@@ -36,21 +36,5 @@ class HomeController extends Controller
         return view('pages.home', compact('curatorsCount', 'comments', 'graduatedParticipantsCount'));
     }
 
-    public function token(Request $request)
-    {
-        $userID = \Auth::guard('participant')->id(); // If you use a different auth system, do your checks here
-        $userIDInQueryParam = $request->get('user_id');
-        $pushNotifications = new \Pusher\PushNotifications\PushNotifications([
-            "instanceId" => strval(env('PUSHER_BEAMS_INSTANCE_ID')),
-            "secretKey" => strval(env('PUSHER_BEAMS_SECRET_KEY')),
-        ]);
-
-        if ($userID != $userIDInQueryParam) {
-            return response('Inconsistent request', 401);
-        } else {
-            $beamsToken = $pushNotifications->generateToken(strval($userID));
-            return response()->json($beamsToken);
-        }
-    }
 
 }

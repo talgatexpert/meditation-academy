@@ -53,7 +53,8 @@ class Participant extends Authenticatable
         'certificate',
         'certificate_expiration_at',
         'comment_visible',
-        'one_signal'
+        'one_signal',
+        'remind_step'
     ];
 
     /**
@@ -156,7 +157,8 @@ class Participant extends Authenticatable
         if ($this->step < self::MAX_STEP) {
             $this->step++;
             $this->step_assigned_at = now();
-            $this->step_reported_at = null;
+            $this->remind_step = NULL;
+            $this->step_reported_at = NULL;
             $this->curator_pending_level = self::CURATOR_PENDING_LEVEL_NONE;
             if ($autoSave) {
                 $this->save();
@@ -164,7 +166,7 @@ class Participant extends Authenticatable
             // Участнику доступен след. шаг
             event(new ParticipantNextStep($this, $comment));
         }
-        if ($comment->step == self::MAX_STEP && $this->graduate == self::IS_NOT_GRADUATE){
+        if ($comment->step == self::MAX_STEP && $this->graduate == self::IS_NOT_GRADUATE) {
             $this->graduate = self::IS_GRADUATE;
             $this->certificate = mb_strtoupper(Str::random(10));
             $now = Carbon::now();
@@ -196,6 +198,14 @@ class Participant extends Authenticatable
     public function reportedAtStep(int $step): bool
     {
         return $this->comments()->reports()->ofStep($step)->count() > 0;
+    }
+
+    public function participantHasNotComment($reportedAtStep): bool
+    {
+        return !$this->isGraduate() && !$reportedAtStep
+            && (!is_null($this->step_assigned_at)
+                && ($this->step_assigned_at->addDays(3) <= now()))
+            && is_null($this->remind_step);
     }
 
     /**
@@ -269,6 +279,7 @@ class Participant extends Authenticatable
     {
         return $this->curator_assigned_at ? Carbon::createFromFormat('Y-m-d H:i:s', $this->curator_assigned_at)->format('d.m.Y') : null;
     }
+
     /*
      *  Возвращаем дату (дд.мм.гггг)
      */
@@ -343,27 +354,36 @@ class Participant extends Authenticatable
         return $this;
     }
 
+    public function isGraduate()
+    {
+        return $this->graduate === self::IS_GRADUATE;
+    }
+
     /*
      * Возвращает участника который еще не выпущен
      */
 
-    public static function isNotGraduate(){
-        return static::where('graduate', '=', self::IS_NOT_GRADUATE);
+    public  function scopeIsNotGraduate($query)
+    {
+        return $query->where('graduate', '=', self::IS_NOT_GRADUATE);
     }
 
     /*
      * Возвращает участника который выпущен
      */
 
-    public static function isGraduate(){
-        return static::where('graduate', '=', self::IS_GRADUATE);
+    public  function scopeIsGraduate($query)
+    {
+        return $query->where('graduate', '=', self::IS_GRADUATE);
     }
+
     /*
      * Выпускает участника
      * Выдается сертификат
      * Устанавливается дата выпуска
      */
-    public function setGraduate(){
+    public function setGraduate()
+    {
         $this->graduate = self::IS_GRADUATE;
         $this->certificate = mb_strtoupper(Str::random(10));
         $now = Carbon::now();
@@ -371,13 +391,14 @@ class Participant extends Authenticatable
         $this->certificate_expiration_at = $now->addYear();
         $this->save();
     }
+
     /*
      * Возвращает только выпущенных участников
      */
 
     public function scopeOnlyGraduate($query)
     {
-        $query->where('participants.graduate', self::IS_GRADUATE)->with('curator')->onlyTrashed()->orWhere(function ($q){
+        $query->where('participants.graduate', self::IS_GRADUATE)->with('curator')->onlyTrashed()->orWhere(function ($q) {
             $q->withoutTrashed()->where('participants.graduate', self::IS_GRADUATE);
         });
     }
@@ -388,16 +409,10 @@ class Participant extends Authenticatable
 
     public function scopeHasReviews($query)
     {
-        $query->whereHas('comments', function ($q){
+        $query->whereHas('comments', function ($q) {
             $q->where('comments.status', 1)->where('comments.publish', 1)->where('comments.step', self::MAX_STEP)->whereNull('comments.parent_id');
         });
     }
-
-
-
-
-
-
 
 
 }

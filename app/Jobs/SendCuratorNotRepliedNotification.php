@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Str;
 
 class SendCuratorNotRepliedNotification implements ShouldQueue
 {
@@ -42,11 +43,12 @@ class SendCuratorNotRepliedNotification implements ShouldQueue
     public function handle()
     {
         // Создаем экземпляр письма
-        $mail = new CuratorNotReplied($this->participant);
+//        $mail = new CuratorNotReplied($this->participant);
 
         // Отправляем письмо всем активным менеджерам или админам, в зависимости от уровня ожидания назначения куратора
         $users = [];
         $participant = $this->participant;
+        $token = null;
 
         if ($this->participant->curator_pending_level == Participant::CURATOR_PENDING_LEVEL_MANAGER) {
             $users = User::active()->where(function (Builder $query) use ($participant) {
@@ -58,11 +60,33 @@ class SendCuratorNotRepliedNotification implements ShouldQueue
             })->get();
         }
 
+//
+//        foreach ($users as $user) {
+//            // Необходимо каждый раз очищать массив с получателями, иначе каждое след. письмо будет содержать в себе пред. адрес
+//            $mail->to = [];
+//            \Mail::to($user)->send($mail);
+//        }
 
         foreach ($users as $user) {
-            // Необходимо каждый раз очищать массив с получателями, иначе каждое след. письмо будет содержать в себе пред. адрес
-            $mail->to = [];
-            \Mail::to($user)->send($mail);
+            // Генерируем токены для каждого юзера отдельно
+            if ($this->participant->curator_id === $user->id) {
+                // проверяем есть ли у пользователя уже токен если да используем текущий  || или создаем новый токен
+                if (empty($user->getRememberToken())){
+                    $user->setRememberToken(Str::random(60));
+                    $user->save;
+                }
+                \Mail::to($user)->send( new CuratorNotReplied($this->participant, $user->getRememberToken()));
+
+            }else{
+                if (empty($user->getRememberToken())){
+                    $user->setRememberToken(Str::random(60));
+                    $user->save;
+                }
+                \Mail::to($user)->send( new CuratorNotReplied($this->participant, $user->getRememberToken()));
+            }
+
+
         }
+
     }
 }

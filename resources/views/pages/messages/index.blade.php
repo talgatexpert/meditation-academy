@@ -15,7 +15,7 @@
             <span class="breadcrumbs__text">Письма</span>
         </li>
     </ul>
-    <h1 class="h2">Письма</h1>
+    <h1 class="h2">Фундамент медитации</h1>
 </div>
 
 <div class="container container--wide">

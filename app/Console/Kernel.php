@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\CuratorNotReplied;
+use App\Console\Commands\ParticipantRemindMessage;
 use App\Console\Commands\ParticipantsCurator;
 use App\Console\Commands\ParticipantsInactive;
 use App\Console\Commands\ParticipantsUnverified;
@@ -23,7 +24,8 @@ class Kernel extends ConsoleKernel
         ParticipantsInactive::class,
         ParticipantsUnverified::class,
         PreviewClear::class,
-        CuratorNotReplied::class
+        CuratorNotReplied::class,
+        ParticipantRemindMessage::class
     ];
 
     /**
@@ -36,6 +38,8 @@ class Kernel extends ConsoleKernel
     {
         // Архивируем неактивных участников каждую минуту
         $schedule->command(ParticipantsInactive::class)->everyMinute();
+        // Архивируем неактивных участников каждую минуту
+        $schedule->command(ParticipantRemindMessage::class)->everyMinute();
 
         // Архивируем неподтвержденных участников каждую минуту
         $schedule->command(ParticipantsUnverified::class)->everyMinute();
@@ -44,7 +48,7 @@ class Kernel extends ConsoleKernel
         $schedule->command(ParticipantsCurator::class)->everyFiveMinutes();
 
         // Оповещаем куратора о том что необходимо ответить проверяем каждый час
-        $schedule->command(CuratorNotReplied::class)->hourly();
+        $schedule->command(CuratorNotReplied::class)->everyMinute();
 
         // Очищаем папку с временными файлами предпросмотра каждый день в полночь
         $schedule->command(PreviewClear::class)->daily();

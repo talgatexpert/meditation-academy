@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Steps;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class CommentStoreRequest extends FormRequest
@@ -18,7 +19,7 @@ class CommentStoreRequest extends FormRequest
         // Определяем, это ответ куратора на комментарий или участник пишет
         if ($this->curator_reply) {
             // Отвечать на комментарий может только авторизованный куратор
-            return \Auth::check() && \Auth::user()->isCurator()  ||\Auth::check() && \Auth::user()->isManager();
+            return (\Auth::check() && (\Auth::user()->isCurator()  || \Auth::user()->isManager()));
         } else {
             $guard = \Auth::guard('participant');
 

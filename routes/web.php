@@ -10,7 +10,6 @@ Route::get('participant-get', 'UserController@getParticipant');
 
 Route::post('subscribe', 'SubscriptionController@subscribe')->name('subscribe');
 Route::get('unsubscribe/{token}', 'SubscriptionController@unsubscribe')->name('unsubscribe');
-Route::get('pusher/beams-auth', 'HomeController@token')->name('pusher');
 
 
 // Истории успеха участников

@@ -28,7 +28,7 @@ class UsersTableSeeder extends Seeder
 
         // Создаем 10 фейковых пользователей (только на локальном)
         if (app()->environment('local')) {
-            factory(App\Models\User::class, 10)->create();
+            factory(App\Models\User::class, 50)->create();
         }
     }
 

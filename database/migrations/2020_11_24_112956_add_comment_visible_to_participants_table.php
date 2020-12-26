@@ -26,7 +26,7 @@ class AddCommentVisibleToParticipantsTable extends Migration
     public function down()
     {
         Schema::table('participants', function (Blueprint $table) {
-            Schema::dropIfExists('participants');
+            $table->dropColumn('comment_visible');
         });
     }
 }

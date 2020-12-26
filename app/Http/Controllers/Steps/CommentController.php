@@ -75,6 +75,7 @@ class CommentController extends Controller
             // Если участником был написан отчет, необходимо сохранить время публикации
             if ($comment->isReport()) {
                 $comment->participant->step_reported_at = now();
+                $comment->participant->remind_step = NULL;
                 $comment->participant->one_signal = $request->has('one_signal') && !is_null($request->get('one_signal')) ? $request->get('one_signal') : $comment->participant->one_signal;
                 $comment->participant->save();
             }
@@ -131,6 +132,7 @@ class CommentController extends Controller
                 $now = Carbon::now();
                 $user->graduated_at = $now;
                 $user->certificate_expiration_at = $now->addYear();
+                $user->remind_step = NULL;
                 $user->save();
 
                 $participant =  Participant::where('id', $user->id)->firstOrFail();

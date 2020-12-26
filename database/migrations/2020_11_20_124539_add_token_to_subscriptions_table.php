@@ -26,7 +26,7 @@ class AddTokenToSubscriptionsTable extends Migration
     public function down()
     {
         Schema::table('subscriptions', function (Blueprint $table) {
-            Schema::dropIfExists('subscriptions');
+            $table->dropColumn('token');
         });
     }
 }

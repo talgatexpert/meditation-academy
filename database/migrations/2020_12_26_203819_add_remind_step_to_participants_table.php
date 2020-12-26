@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddActiveToSubscriptionsTable extends Migration
+class AddRemindStepToParticipantsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddActiveToSubscriptionsTable extends Migration
      */
     public function up()
     {
-        Schema::table('subscriptions', function (Blueprint $table) {
-            $table->tinyInteger('active')->default(1);
+        Schema::table('participants', function (Blueprint $table) {
+            $table->tinyInteger('remind_step')->nullable();
         });
     }
 
@@ -25,8 +25,8 @@ class AddActiveToSubscriptionsTable extends Migration
      */
     public function down()
     {
-        Schema::table('subscriptions', function (Blueprint $table) {
-            $table->dropColumn('active');
+        Schema::table('participants', function (Blueprint $table) {
+            $table->dropColumn('remind_step');
         });
     }
 }

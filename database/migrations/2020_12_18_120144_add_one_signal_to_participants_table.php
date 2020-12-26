@@ -26,7 +26,7 @@ class AddOneSignalToParticipantsTable extends Migration
     public function down()
     {
         Schema::table('participants', function (Blueprint $table) {
-            //
+            $table->dropColumn('one_signal');
         });
     }
 }
