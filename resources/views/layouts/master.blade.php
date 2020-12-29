@@ -328,10 +328,9 @@
     </a>
 </div>
 <script src="{{mix('assets/js/libs.min.js')}}"></script>
+<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
 @auth('participant')
-<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js"></script>
     <script>
-
         window.OneSignal = window.OneSignal || [];
         OneSignal.push(function () {
             OneSignal.init({

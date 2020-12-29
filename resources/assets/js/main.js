@@ -415,9 +415,7 @@ $(function () {
         let checkbox = $('.js-comment-visible');
         let userName = $('.js-user-update').find('.js-user-name');
         $.get("/participant-get", function (data) {
-            console.log(data)
             if (data.status === 'OK') {
-
                 if(data.graduate && $("#new-message").length === 1){
                     $('html, body').animate({
                         scrollTop: $("#new-message").offset().top
@@ -632,7 +630,6 @@ $(function () {
         const queryOnSubmit = (val) => {
             var $btn = $form.find('button[type=submit]');
             const resultSerialize = $form.serialize() + val;
-            console.log(resultSerialize)
             $btn.prop('disabled', true);
             $.ajax({
                 type: $form.attr('method'),
