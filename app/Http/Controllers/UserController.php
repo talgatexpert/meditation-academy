@@ -33,7 +33,7 @@ class UserController extends Controller
     {
         $guard = \Auth::guard('participant');
         if ($guard->check()){
-            return response()->json(['status' => 'OK', 'visible' => $guard->user()->comment_visible, 'name' => $guard->user()->name]);
+            return response()->json(['status' => 'OK', 'visible' => $guard->user()->comment_visible, 'name' => $guard->user()->name, 'graduate' => $guard->user()->isGraduate()]);
         }
 
     }

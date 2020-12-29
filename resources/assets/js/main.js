@@ -377,6 +377,12 @@ $(function () {
 
         $.get("/participant-get", function (data) {
             if (data.status === 'OK') {
+                if(data.graduate && $("#new-message").length === 1){
+                    $('html, body').animate({
+                        scrollTop: $("#new-message").offset().top
+                    }, 2000);
+                }
+
                 events.checkbox = data.visible;
                 if (events.checkbox === true) {
                     checkbox.prop('checked', true);
@@ -408,9 +414,15 @@ $(function () {
 
         let checkbox = $('.js-comment-visible');
         let userName = $('.js-user-update').find('.js-user-name');
-
         $.get("/participant-get", function (data) {
+            console.log(data)
             if (data.status === 'OK') {
+
+                if(data.graduate && $("#new-message").length === 1){
+                    $('html, body').animate({
+                        scrollTop: $("#new-message").offset().top
+                    }, 2000);
+                }
                 events.checkbox = data.visible;
                 if (events.checkbox === true) {
                     checkbox.prop('checked', true);
@@ -432,6 +444,7 @@ $(function () {
 
 
         $('.popup-bg, .js-popup').removeClass('open');
+
 
     });
 
