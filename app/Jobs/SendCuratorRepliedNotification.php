@@ -8,6 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use OneSignal;
 
 class SendCuratorRepliedNotification implements ShouldQueue
 {
@@ -35,7 +36,7 @@ class SendCuratorRepliedNotification implements ShouldQueue
 
             $userId =  $this->event->participant->one_signal;
             $heading = "Вам ответил куратор";
-            \OneSignal::setParam('chrome_web_icon', asset('assets/img/logo.png'))->sendNotificationToUser(
+            OneSignal::setParam('chrome_web_icon', asset('assets/img/logo.png'))->sendNotificationToUser(
                 "Шаг " .  $this->event->comment->step . ": Новый ответ на ваш комментарий.",
                 $userId,
                 $url =  $this->event->comment ? route('steps.' .  $this->event->comment->step, ['participant_token' =>   $this->event->participant->getRememberToken() ]) . '#comment-' . $this->event->comment->id : '#',
