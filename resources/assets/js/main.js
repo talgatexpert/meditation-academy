@@ -358,9 +358,44 @@ $(function () {
         $('.popup-bg, #popup-callback').addClass('open');
         fixHeaderPopup();
     });
+
     $(document).on('click', '.js-curator-comment-reply', function (e) {
         e.preventDefault();
-        $(this).closest('.comment__info').find('.comment-curator-reply-form').toggle();
+        let $form = $(this).closest('.comment__info').find('.comment-curator-reply-form');
+        $form.find('.ck-reset').remove();
+
+        $form.toggle(1, function () {
+             let id = $(this).find('textarea').attr('id');
+             ClassicEditor
+                .create(document.querySelector(`#${id}`), {
+                    language: 'ru',
+                    toolbar: {
+                        items: [
+                            'heading',
+                            '|',
+                            'bold',
+                            'italic',
+                            '|',
+                            'bulletedList',
+                            'numberedList',
+                            '|',
+                            'undo',
+                            'redo',
+                            '|',
+                            'blockQuote',
+                            '|',
+                            'link'
+                        ]
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        });
+
+
+
+
     });
 
 
@@ -377,7 +412,7 @@ $(function () {
 
         $.get("/participant-get", function (data) {
             if (data.status === 'OK') {
-                if(data.graduate && $("#new-message").length === 1){
+                if (data.graduate && $("#new-message").length === 1) {
                     $('html, body').animate({
                         scrollTop: $("#new-message").offset().top
                     }, 2000);
@@ -416,7 +451,7 @@ $(function () {
         let userName = $('.js-user-update').find('.js-user-name');
         $.get("/participant-get", function (data) {
             if (data.status === 'OK') {
-                if(data.graduate && $("#new-message").length === 1){
+                if (data.graduate && $("#new-message").length === 1) {
                     $('html, body').animate({
                         scrollTop: $("#new-message").offset().top
                     }, 2000);
@@ -638,7 +673,15 @@ $(function () {
             }).done(function (response) {
                 $btn.prop('disabled', false);
                 if (response.status === 'OK') {
-                    $form.remove();
+
+                    $form.hide();
+                    CKEDITOR
+                        .then(res => {
+                            res.setData('')
+                        })
+                        .catch(error => {
+                            console.error(error)
+                        });
                     // Обновляем комментарии
                     $('.item-step__comments').data('last-id', response.lastId);
                     $('.comments__amount').text(response.reportsCount);
@@ -661,21 +704,24 @@ $(function () {
         };
         OneSignal.push(function () {
             OneSignal.isPushNotificationsEnabled(function (isEnabled) {
-                if (isEnabled) {
-                    OneSignal.getUserId()
-                        .then(res => {
-                            queryOnSubmit(res)
+                    if (isEnabled) {
+                        OneSignal.getUserId()
+                            .then(res => {
+                                queryOnSubmit(res)
+                            })
+                    } else {
+                        OneSignal.push(function () {
+                            OneSignal.registerForPushNotifications()
+                                .then(() => {
+                                    OneSignal.getUserId()
+                                        .then(res => {
+                                            queryOnSubmit(res)
+                                        })
+                                        .catch(() => {
+                                            queryOnSubmit('')
+                                        })
+                                })
                         })
-                } else {
-                    OneSignal.push(function () {
-                        OneSignal.registerForPushNotifications()
-                            .then(() => {
-                                OneSignal.getUserId()
-                                    .then(res => {
-                                        queryOnSubmit(res)
-                                    })
-                                    .catch(()=>{    queryOnSubmit('')})
-                            })})
                     }
                 }
             );
@@ -709,6 +755,8 @@ $(function () {
         var $comment = $(this).closest('.comments__item');
         var $replyForm = $comment.find('.comment-reply-form form');
         var commentId = $comment.data('comment-id');
+        $replyForm.find('.ck-reset').remove();
+
         let that = $(this);
         if (commentEdit) {
             $('.comment-edit-form').hide();
@@ -727,11 +775,63 @@ $(function () {
                 $('.comment-reply-form .field__textarea').val('').removeClass('error value');
                 $('.comment-reply-form label.error').remove();
                 $replyForm.parent().show();
+                let id = $replyForm.find('textarea').attr('id');
                 reportReply = commentId;
+                ClassicEditor
+                    .create(document.querySelector(`#${id}`), {
+                        language: 'ru',
+                        toolbar: {
+                            items: [
+                                'heading',
+                                '|',
+                                'bold',
+                                'italic',
+                                '|',
+                                'bulletedList',
+                                'numberedList',
+                                '|',
+                                'undo',
+                                'redo',
+                                '|',
+                                'blockQuote',
+                                '|',
+                                'link'
+                            ]
+                        }
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
             }
         } else {
+            let id = $replyForm.find('textarea').attr('id');
             $replyForm.parent().show();
             reportReply = commentId;
+            ClassicEditor
+                .create(document.querySelector(`#${id}`), {
+                    language: 'ru',
+                    toolbar: {
+                        items: [
+                            'heading',
+                            '|',
+                            'bold',
+                            'italic',
+                            '|',
+                            'bulletedList',
+                            'numberedList',
+                            '|',
+                            'undo',
+                            'redo',
+                            '|',
+                            'blockQuote',
+                            '|',
+                            'link'
+                        ]
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                });
         }
         $replyForm.unbind('submit').submit(function (e) {
             e.preventDefault();
@@ -815,6 +915,36 @@ $(function () {
             }
         });
     });
+    let CKEDITOR = null;
+    if ($('.report-form').length == 1) {
+        let reportFormId = $('.report-form').find('textarea').attr('id');
+
+        CKEDITOR = ClassicEditor
+            .create(document.querySelector(`#${reportFormId}`), {
+                language: 'ru',
+                toolbar: {
+                    items: [
+                        'heading',
+                        '|',
+                        'bold',
+                        'italic',
+                        '|',
+                        'bulletedList',
+                        'numberedList',
+                        '|',
+                        'undo',
+                        'redo',
+                        '|',
+                        'blockQuote',
+                        '|',
+                        'link'
+                    ]
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
 
     // Редактирование отчета\комментария на шаге
     var commentEdit = null;
@@ -823,6 +953,8 @@ $(function () {
         var $editForm = $comment.find('.comment-edit-form form');
         var $textarea = $editForm.find('.field__textarea');
         var commentId = $comment.data('comment-id');
+        let id = $textarea.attr('id');
+
         if (reportReply) {
             $('.comment-reply-form').hide();
             $('.comment-reply-form .field__textarea').val('').removeClass('error value');
@@ -839,14 +971,66 @@ $(function () {
                 $('.comment-edit-form').hide();
                 $('.comment-edit-form .field__textarea').val('').removeClass('error value');
                 $('.comment-edit-form label.error').remove();
-                $textarea.val($comment.find('.comment__text p').html()).addClass('value');
+                $textarea.val($comment.find('.comment__text').html()).addClass('value');
                 $editForm.parent().show();
                 commentEdit = commentId;
+                ClassicEditor
+                    .create(document.querySelector(`#${id}`), {
+                        language: 'ru',
+                        toolbar: {
+                            items: [
+                                'heading',
+                                '|',
+                                'bold',
+                                'italic',
+                                '|',
+                                'bulletedList',
+                                'numberedList',
+                                '|',
+                                'undo',
+                                'redo',
+                                '|',
+                                'blockQuote',
+                                '|',
+                                'link'
+                            ]
+                        }
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
             }
         } else {
-            $textarea.val($comment.find('.comment__text p').text()).addClass('value');
+            $textarea.val($comment.find('.comment__text').html()).addClass('value');
+            $editForm.find('.ck-reset').remove();
             $editForm.parent().show();
             commentEdit = commentId;
+            ClassicEditor
+                .create(document.querySelector(`#${id}`), {
+                    language: 'ru',
+                    toolbar: {
+                        items: [
+                            'heading',
+                            '|',
+                            'bold',
+                            'italic',
+                            '|',
+                            'bulletedList',
+                            'numberedList',
+                            '|',
+                            'undo',
+                            'redo',
+                            '|',
+                            'blockQuote',
+                            '|',
+                            'link'
+                        ]
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
         }
         $editForm.unbind('submit').submit(function (e) {
             e.preventDefault();
@@ -906,23 +1090,27 @@ $(function () {
                             '<a class="comment__icon comment-delete" href="javascript:void(0);" title="Удалить свой комментарий">\n' +
                             '                        <svg class="icon icon-delete"><use xlink:href="/assets/img/spritesvg.svg#delete"></use></svg>\n' +
                             '                    </a></div>';
-                        if ($('#report-' + parentCommentId.data('comment-id') + '-comments').children().length <= 0) {
+                        if ($('#report-' + parentCommentId.data('comment-id') + '-comments').children().length <= 0 && !$('[data-user-uuid]').data('user-uuid')) {
                             blocks.append(commentRemoveButton);
                             let url = $('[data-load-url]').data('loadUrl');
                             parentCommentId.attr('data-delete-url', url + '/' + parentCommentId.data('comment-id'));
                         }
+                        let uniqueId = uuid();
+                        let elementId = '#' + uniqueId;
 
                         $('.comments__amount').text(response.reportsCount);
-                        let html = '<form action="' + $('.comments').data('store-url') + '" method="POST"  class="step-info__form form report-form">' +
+                        let html = '<form action="' + $('.comments').data('store-url') + '" method="POST"  class="step-info__form form report-form" novalidate>' +
                             '<div class="form__field field field--wide">' +
-                            '<textarea class="field__textarea" name="body" required maxlength="2000"></textarea>' +
-                            '<div class="field__label">Ваш отчет</div>\n' +
+                            '<textarea class="field__textarea" id="' + uniqueId + '" name="body" required maxlength="2000"></textarea>' +
+                            // '<div class="field__label">Ваш отчет</div>\n' +
                             '</div>' +
                             '<input type="hidden" name="one_signal" id="oneSignalClientId" value="">' +
                             '<button type="submit" class="form__btn btn" ><span>Отправить отчет</span></button>' +
                             '</form>';
-                        if ($('.report-form').length === 0 && $('[data-comment-id=' + parentCommentId.data('comment-id') + ']').length === 0) {
-                            $('.js-form-report').append(html);
+
+                        if ($('[data-comment-id=' + parentCommentId.data('comment-id') + ']').length === 0) {
+                            const $form = $('.js-form-report').find('.report-form');
+                            $form.show();
                         }
                     }
                 } else {
@@ -1063,6 +1251,22 @@ function showScroll() {
     _this.body.style.top = '';
     window.scroll(0, _this.scrollTop);
     $('.js-header').removeClass('fixed-scroll');
+}
+
+function uuid() { // Public Domain/MIT
+    var d = new Date().getTime();//Timestamp
+    var d2 = (performance && performance.now && (performance.now() * 1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16;//random number between 0 and 16
+        if (d > 0) {//Use timestamp until depleted
+            r = (d + r) % 16 | 0;
+            d = Math.floor(d / 16);
+        } else {//Use microseconds since page-load if supported
+            r = (d2 + r) % 16 | 0;
+            d2 = Math.floor(d2 / 16);
+        }
+        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
 }
 
 

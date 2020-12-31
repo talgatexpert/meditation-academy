@@ -174,7 +174,7 @@
                     <p>Удалось ли перемещать зону внимания без потери непрерывности в телесных ощущениях?</p>
                     <p>И, как обычно, в конце страницы вас ждет небольшой рассказ о практике.</p>
 
-                    @includeWhen(($guard = Auth::guard('participant'))->check() && $guard->user()->isStepAvailable(3) && !$guard->user()->reportedAtStep(3), 'includes.steps.report')
+                    @include('includes.steps.report')
                 </div>
 
                 @include('includes.steps.comments', ['step' => 3])
@@ -201,7 +201,7 @@
             </div>
         </div>
 
-        @includeWhen($guard->check() && $guard->user()->isNotVotedAtPoll('steps'), 'includes.steps.questionare')
+        @includeWhen(($guard = Auth::guard('participant'))->check()  && $guard->user()->isNotVotedAtPoll('steps'), 'includes.steps.questionare')
     </div>
 </div>
 @endsection

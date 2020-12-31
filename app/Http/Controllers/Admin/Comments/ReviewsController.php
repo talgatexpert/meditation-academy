@@ -10,6 +10,7 @@ use App\Http\Requests\Admin\Comments\Reviews\UpdateRequest;
 use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ReviewsController extends Controller
 {
@@ -177,8 +178,10 @@ class ReviewsController extends Controller
         $comment = null;
         $targetComment = Comment::findOrFail($request->input('target_id'));
         $curators = $this->getAvailableCurators();
+        $uuid='unique_'. $targetComment->id .'_' . Str::lower(Str::random(10));
 
-        return view('pages.admin.comments.reviews.modal', compact('comment', 'targetComment', 'curators'));
+
+        return view('pages.admin.comments.reviews.modal', compact('comment', 'targetComment', 'curators', 'uuid'));
     }
 
     /**
@@ -231,10 +234,11 @@ class ReviewsController extends Controller
     public function edit($id)
     {
         $comment = Comment::findOrFail($id);
+        $uuid = 'comment'.$comment->id .'_' . Str::lower(Str::random(8));
         // Проверка прав доступа
         abort_unless(\Gate::any([User::ABILITY_ADMIN, User::ABILITY_MANAGER, User::ABILITY_CURATOR]), 403);
 
-        return view('pages.admin.comments.reviews.modal', compact('comment'));
+        return view('pages.admin.comments.reviews.modal', compact('comment', 'uuid'));
     }
 
     /**

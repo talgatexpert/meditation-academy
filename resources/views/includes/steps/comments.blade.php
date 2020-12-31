@@ -1,4 +1,6 @@
-<div class="item-step__comments comments" data-load-url="{{ route('steps.comments.index') }}" data-store-url="{{ route('steps.comments.store') }}" data-like-url="{{ route('steps.like') }}" data-last-id="{{ $lastId }}" data-step="{{ $step }}">
+<div class="item-step__comments comments"                        @canany([\App\Models\User::ABILITY_ADMIN, \App\Models\User::ABILITY_MANAGER, \App\Models\User::ABILITY_CURATOR])
+    data-user-uuid="{{Auth::check() ? Auth::id() : ''}}"
+@endcanany data-load-url="{{ route('steps.comments.index') }}"  data-store-url="{{ route('steps.comments.store') }}" data-like-url="{{ route('steps.like') }}" data-last-id="{{ $lastId }}" data-step="{{ $step }}">
     <div class="comments__info">
         <div class="comments__amount h1 h1--green">{{ $reportsCount }}</div>
         <div class="comments__text">отчетов всего было <br>написано для этого задания</div>

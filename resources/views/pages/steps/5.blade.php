@@ -138,7 +138,7 @@
                     <p>Если ничего не получилось, попробуйте завтра.</p>
                     <p>Если не получится и завтра, напишите об этом, <b>мы все равно откроем вам доступ </b>к следующему шагу.</p>
 
-                    @includeWhen(($guard = Auth::guard('participant'))->check() && $guard->user()->isStepAvailable(5) && !$guard->user()->reportedAtStep(5), 'includes.steps.report')
+                    @include('includes.steps.report')
                 </div>
 
                 @include('includes.steps.comments', ['step' => 5])
@@ -167,7 +167,7 @@
             </div>
         </div>
 
-        @includeWhen($guard->check() && $guard->user()->isNotVotedAtPoll('steps'), 'includes.steps.questionare')
+        @includeWhen(($guard = Auth::guard('participant'))->check()  && $guard->user()->isNotVotedAtPoll('steps'), 'includes.steps.questionare')
     </div>
 </div>
 @endsection

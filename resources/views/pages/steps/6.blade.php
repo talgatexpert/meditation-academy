@@ -155,7 +155,7 @@
                     <p>К какому типу относитесь вы? </p>
                     <p>Удалось ли вам подружиться с цифрами?</p>
 
-                    @includeWhen(($guard = Auth::guard('participant'))->check() && $guard->user()->isStepAvailable(6) && !$guard->user()->reportedAtStep(6), 'includes.steps.report')
+                    @include('includes.steps.report')
                 </div>
 
                 @include('includes.steps.comments', ['step' => 6])
@@ -186,7 +186,7 @@
             </div>
         </div>
 
-        @includeWhen($guard->check() && $guard->user()->isNotVotedAtPoll('steps'), 'includes.steps.questionare')
+        @includeWhen(($guard = Auth::guard('participant'))->check()  && $guard->user()->isNotVotedAtPoll('steps'), 'includes.steps.questionare')
     </div>
 </div>
 @endsection

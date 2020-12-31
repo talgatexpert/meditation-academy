@@ -327,6 +327,7 @@
         </svg>
     </a>
 </div>
+
 <script src="{{mix('assets/js/libs.min.js')}}"></script>
 <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
 @auth('participant')
@@ -347,6 +348,8 @@
 
     </script>
 @endauth
+<script src="https://cdn.ckeditor.com/ckeditor5/24.0.0/classic/ckeditor.js"></script>
+<script src="{{asset('assets/js/translations/ru.js')}}"></script>
 <script src="{{mix('assets/js/main.min.js')}}"></script>
 
 

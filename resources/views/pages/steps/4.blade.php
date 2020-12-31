@@ -148,7 +148,7 @@
                     <p>Мы на «экваторе» нашего курса. Расскажите куратору, как прошла медитация.</p>
                     <p>Вы почувствовали умиротворение?</p>
 
-                    @includeWhen(($guard = Auth::guard('participant'))->check() && $guard->user()->isStepAvailable(4) && !$guard->user()->reportedAtStep(4), 'includes.steps.report')
+                    @include('includes.steps.report')
                 </div>
 
                 @include('includes.steps.comments', ['step' => 4])
@@ -178,7 +178,7 @@
             </div>
         </div>
 
-        @includeWhen($guard->check() && $guard->user()->isNotVotedAtPoll('steps'), 'includes.steps.questionare')
+        @includeWhen(($guard = Auth::guard('participant'))->check()  && $guard->user()->isNotVotedAtPoll('steps'), 'includes.steps.questionare')
     </div>
 </div>
 @endsection

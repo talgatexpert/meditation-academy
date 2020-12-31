@@ -1,1 +1,1 @@
-<span title="{{ $comment->isReport() ? 'Отчет' : 'Комментарий' }}">{{ $comment->body }}</span>
+<span title="{{ $comment->isReport() ? 'Отчет' : 'Комментарий' }}">{!! $comment->body !!}</span>

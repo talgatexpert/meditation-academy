@@ -8,7 +8,7 @@
     <div class="comment__info">
         <div class="comment__name h5">{{ $report->participant->name }}</div>
         <div class="comment__date">{{ $report->created_at->isoFormat('DD MMMM, YYYY') }}</div>
-        <div class="comment__text"><p>{{ $report->body }}</p></div>
+        <div class="comment__text">{!! $report->body !!}</div>
         <div class="comment__bottom">
             <a class="comment__like js-like{{ (Auth::guard('participant')->guest() ? ' no-border' : '') . ($report->isLiked() ? ' active' : '') }}" href="javascript:void(0);">
                 <svg class="icon icon-heart"><use xlink:href="/assets/img/spritesvg.svg#heart"></use></svg>
@@ -33,8 +33,8 @@
             <div class="comment-curator-reply-form" style="margin-top:10px; @if($report->id == request('curator_reply')) display:block @else display: none @endif">
                 <form action="{{ route('steps.comments.store') }}" method="POST" class="step-info__form form">
                     <div class="form__field field field--wide">
-                        <textarea class="field__textarea" name="body" maxlength="2000"></textarea>
-                        <div class="field__label">Ответ {{ Auth::user()->isManager() ? 'менеджера' : 'куратора'}}</div>
+                        <textarea class="field__textarea" name="body" id="editor-{{ \Illuminate\Support\Str::uuid() }}" maxlength="2000"></textarea>
+{{--                        <div class="field__label">Ответ {{ Auth::user()->isManager() ? 'менеджера' : 'куратора'}}</div>--}}
                     </div>
                     <input type="hidden" name="curator_reply" value="{{ $report->id }}">
                     <input type="hidden" name="step" value="{{ $step }}">
@@ -46,8 +46,8 @@
             <div class="comment-reply-form" style="margin-top:10px;display:none;">
                 <form action="{{ route('steps.comments.store') }}" method="POST" class="step-info__form form">
                     <div class="form__field field field--wide">
-                        <textarea class="field__textarea" name="body" maxlength="2000"></textarea>
-                        <div class="field__label">Ваш ответ</div>
+                        <textarea class="field__textarea js-text-curator" id="editor-{{ \Illuminate\Support\Str::uuid() }}"  name="body" maxlength="2000"></textarea>
+{{--                        <div class="field__label">Ваш ответ</div>--}}
                     </div>
                     <input type="hidden" name="parent_id" value="{{ $report->id }}">
                     <input type="hidden" name="step" value="{{ $step }}">
@@ -59,8 +59,8 @@
             <div class="comment-edit-form" style="margin-top:10px;display:none;">
                 <form action="{{ route('steps.comments.update', [$report]) }}" method="POST" class="step-info__form form">
                     <div class="form__field field field--wide">
-                        <textarea class="field__textarea" name="body" maxlength="2000"></textarea>
-                        <div class="field__label">Ваш комментарий</div>
+                        <textarea class="field__textarea js-text-curator" id="editor-{{ \Illuminate\Support\Str::uuid() }}"  name="body" maxlength="2000"></textarea>
+{{--                        <div class="field__label">Ваш комментарий</div>--}}
                     </div>
                     {{ method_field('PUT') }}
                     <button type="submit" class="form__btn btn"> <span>Отправить</span></button>

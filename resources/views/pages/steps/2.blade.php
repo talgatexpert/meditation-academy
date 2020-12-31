@@ -172,7 +172,7 @@
                     <p>Напишите здесь о своих ощущениях, что получалось, какие трудности возникали. </p>
                     <p>Также почитайте наш короткий рассказ о практике в конце этой страницы.</p>
 
-                    @includeWhen(($guard = Auth::guard('participant'))->check() && $guard->user()->isStepAvailable(2) && !$guard->user()->reportedAtStep(2), 'includes.steps.report')
+                    @include('includes.steps.report')
                 </div>
 
                 @include('includes.steps.comments', ['step' => 2])
@@ -199,7 +199,7 @@
             </div>
         </div>
 
-        @includeWhen($guard->check() && $guard->user()->isNotVotedAtPoll('steps'), 'includes.steps.questionare')
+        @includeWhen(($guard = Auth::guard('participant'))->check()  && $guard->user()->isNotVotedAtPoll('steps'), 'includes.steps.questionare')
     </div>
 </div>
 @endsection

@@ -161,7 +161,9 @@
                 <div class="item-step__info step-info js-form-report">
                     <p>В качестве благодарности за ваши труды мы вышлем вам персональный сертификат, по которому в течение года вы сможете получить скидку 25% на Ретрит Академии медитации.</p>
 
-                    @includeWhen(($guard = Auth::guard('participant'))->check() && $guard->user()->isStepAvailable(7) && !$guard->user()->reportedAtStep(7), 'includes.steps.report', ['final' => true])
+
+                    @include('includes.steps.report')
+
                 </div>
 
                 @include('includes.steps.comments', ['step' => 7])
@@ -189,7 +191,7 @@
             </div>
         </div>
 
-        @includeWhen($guard->check() && $guard->user()->isNotVotedAtPoll('steps'), 'includes.steps.questionare')
+        @includeWhen(($guard = Auth::guard('participant'))->check()  && $guard->user()->isNotVotedAtPoll('steps'), 'includes.steps.questionare')
     </div>
 </div>
 @endsection

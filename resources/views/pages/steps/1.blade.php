@@ -177,7 +177,7 @@
                         <li>Письмо с авторизацией на следующем задании придет после ответа куратора</li>
                     </ul>
 
-                    @includeWhen(($guard = Auth::guard('participant'))->check() && $guard->user()->isStepAvailable(1) && !$guard->user()->reportedAtStep(1), 'includes.steps.report')
+                    @include('includes.steps.report')
                 </div>
 
                 @include('includes.steps.comments', ['step' => 1])
